@@ -39,7 +39,7 @@ appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap
 - Be awared that the /omlinky/ is my username, you will have yours
 - Than you have to change the code line like this
 ```sh
-appscript.app('Terminal').do_script('pthon3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py --update')
+appscript.app('Terminal').do_script('python3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py --update')
 ```
 - Do the same with line 5150
 ```sh
