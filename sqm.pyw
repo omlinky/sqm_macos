@@ -19,7 +19,7 @@ import appscript
 # SQLmap Update
 # -----------------------------------------
 def update_i_t():
-    appscript.app('Terminal').do_script('/Users/your_folder_to_sqlmap/sqlmap.py --update')
+    appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py --update')
 
 
 # ------------------------------------------
@@ -5147,7 +5147,7 @@ class MainApplication(tkinter.Frame):
 
     # Start configured query for sqlmap.py
     def inject_it(self):
-        appscript.app('Terminal').do_script('/Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
+        appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
 
     def on_find(self):
         target = self.searchEdit.get()
