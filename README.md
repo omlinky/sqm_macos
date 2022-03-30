@@ -30,7 +30,7 @@ sudo pip3 install appscript
 - Open sqm.pyw in any text file editor, for example: SublimeText, Coda2, BBEdit, or any other, even in standart macOS text editor
 - go to line 22
 ```sh
-appscript.app('Terminal').do_script('/Users/your_folder_to_sqlmap/sqlmap.py --update')
+appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py --update')
 ```
 - you have to change your_folder_to_sqlmap to your sqlmap installation folder. Example: My installation directory of sqlmap 
 ```sh
@@ -39,15 +39,15 @@ appscript.app('Terminal').do_script('/Users/your_folder_to_sqlmap/sqlmap.py --up
 - Be awared that the /omlinky/ is my username, you will have yours
 - Than you have to change the code line like this
 ```sh
-appscript.app('Terminal').do_script('Users/omlinky/Desktop/sqlmap-dev/sqlmap.py --update')
+appscript.app('Terminal').do_script('pthon3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py --update')
 ```
 - Do the same with line 5150
 ```sh
-appscript.app('Terminal').do_script('/Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
+appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
 ```
 - Where your_folder_to_sqlmap is exact way to your sqlmap installation directory
 ```sh
-appscript.app('Terminal').do_script('Users/omlinky/Desktop/sqlmap-dev/sqlmap.py' % (self.sqlEdit.get()))
+appscript.app('Terminal').do_script('python3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py' % (self.sqlEdit.get()))
 ```
 
 ## How to run
