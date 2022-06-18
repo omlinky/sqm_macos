@@ -66,12 +66,6 @@ cd /Users/omlinky/Desktop/sqlmap-dev
 python3 sqm.pyw
 ```
 
-## If you're stunning with my program you can buy me a coffee or snack
-
-```sh
-Bitcoin: 3PVcJAbWgcE54tKTm4cmz2zZqQR65vQiyY
-```
-
 All video instructions and updates announces you can find on my twitter 
 ```sh
 @omlinky
