@@ -5222,8 +5222,7 @@ def main():
     f = font.Font(family='Helvetica', size=8, weight='bold')
     font.families()
     style = ttk.Style()
-    style.configure(".", foreground="white",
-                    font=f,
+    style.configure(".", font=f,
                     background="black")
     root.title("SQLmap Command Builder")
     root.columnconfigure(0, weight=1)
