@@ -27,27 +27,21 @@ python3 --version
 sudo pip3 install appscript
 ```
 
+- You can put files of SQLmap Command Builder in sqlmap folder or manually change sqlmap intallation folder:
 - Open sqm.pyw in any text file editor, for example: SublimeText, Coda2, BBEdit, or any other, even in standart macOS text editor
-- go to line 22
-```sh
-appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py --update')
+- go to line 20
+```python
+sqlmap_path = "./"
 ```
-- you have to change your_folder_to_sqlmap to your sqlmap installation folder. Example: My installation directory of sqlmap 
-```sh
-/Users/omlinky/Desktop/sqlmap-dev
+- you have to change instllation path "./" to your sqlmap installation path. Example: My installation directory of sqlmap
+- be awared that the /omlinky/ is my username, you will have yours
+```python
+sqlmap_path = "/Users/omlinky/Desktop/sqlmap-dev"
 ```
-- Be awared that the /omlinky/ is my username, you will have yours
-- Than you have to change the code line like this
-```sh
-appscript.app('Terminal').do_script('python3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py --update')
-```
-- Do the same with line 5150
-```sh
-appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
-```
-- Where your_folder_to_sqlmap is exact way to your sqlmap installation directory
-```sh
-appscript.app('Terminal').do_script('python3 Users/omlinky/Desktop/sqlmap-dev/sqlmap.py' % (self.sqlEdit.get()))
+- or you can uncomment next line that contains homebrew installation path of sqlmap
+```python
+#sqlmap_path = "./"
+sqlmap_path = "/opt/homebrew/opt/sqlmap/libexec/"
 ```
 
 ## How to run
@@ -59,12 +53,30 @@ git clone --depth 1 https://github.com/sqlmapproject/sqlmap.git /Users/omlinky/D
 ```sh
 chmod u+x /Users/omlinky/Desktop/sqlmap-dev
 ```
-- Put  all files of SQLmap Command Builder in sqlmap folder
+- Put all files of SQLmap Command Builder in sqlmap folder
 - Go to sqlmap installation folder
 ```sh
 cd /Users/omlinky/Desktop/sqlmap-dev
 python3 sqm.pyw
 ```
+
+## How to run with Homebrew
+- Git this repo to your mac
+```sh
+git clone --depth 1 https://github.com/omlinky/sqm_macos /Users/omlinky/Desktop/sqm_macos
+```
+- Install sqlmap with Homebrew
+```sh
+brew install sqlmap
+```
+- Run script with python
+```sh
+cd /Users/omlinky/Desktop/sqm_macos
+python3 sqm.pyw
+```
+
+## Troubleshoot
+- If you use pyenv, use [this manual](https://stackoverflow.com/a/61879759) to install tkinter properly.
 
 All video instructions and updates announces you can find on my twitter 
 ```sh
