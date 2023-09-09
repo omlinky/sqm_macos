@@ -4090,6 +4090,16 @@ class MainApplication(tkinter.Frame):
             batch_sql = ""
         return batch_sql
 
+    # --no-logging          Stop logging creating
+    @property
+    def f_no_logging(self):
+        sql_no_logging = self.chk_no_logging_var.get()
+        if sql_no_logging == "on":
+            no_logging_sql = " --no-logging"
+        else:
+            no_logging_sql = ""
+        return no_logging_sql
+
     # --binary-fields=..  Result fields having binary values (e.g. "digest")
     def f_binary_fields(self, *args):
         sql_binary_fields = self.chk_binary_fields_var.get()
