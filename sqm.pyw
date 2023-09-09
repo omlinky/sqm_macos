@@ -14,12 +14,18 @@ from tkinter import ttk, font
 import urllib.parse
 import appscript
 
+# -----------------------------------------
+# SQLmap Path Definition
+# -----------------------------------------
+sqlmap_path = "./"
+#sqlmap_path = "/opt/homebrew/opt/sqlmap/libexec/"
+sqlmap_py_path = os.path.join(sqlmap_path, "sqlmap.py")
 
 # -----------------------------------------
 # SQLmap Update
 # -----------------------------------------
 def update_i_t():
-    appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py --update')
+    appscript.app('Terminal').do_script(f'python3 {sqlmap_py_path} --update')
 
 
 # ------------------------------------------
@@ -121,7 +127,7 @@ class MainApplication(tkinter.Frame):
         lfhelp.rowconfigure(0, weight=1)
         lfhelp.columnconfigure(0, weight=1)
 
-        manual_sqlmap = 'python3 sqlmap.py -hh || cmd /k python sqlmap.py -hh || pythonw sqlmap.py -hh'
+        manual_sqlmap = f'python3 {sqlmap_py_path} -hh || cmd /k python {sqlmap_py_path} -hh || pythonw s{sqlmap_py_path} -hh'
         process = subprocess.Popen(manual_sqlmap, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = process.communicate()
         output_str = output.decode('utf-8')  # decoding bytes to string
@@ -138,8 +144,8 @@ class MainApplication(tkinter.Frame):
         tmprs_lst.rowconfigure(0, weight=1)
         tmprs_lst.columnconfigure(0, weight=1)
 
-        manual_tampers_command = 'python3 sqlmap.py --list-tampers || cmd /k python sqlmap.py --list-tampers ' \
-                                 '|| pythonw sqlmap.py --list-tampers'
+        manual_tampers_command = f'python3 {sqlmap_py_path} --list-tampers || cmd /k python {sqlmap_py_path} --list-tampers ' \
+                                 '|| pythonw {sqlmap_py_path} --list-tampers'
         process = subprocess.Popen(manual_tampers_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = process.communicate()
         output_str = output.decode('utf-8')  # decoding bytes to string
@@ -1181,7 +1187,7 @@ class MainApplication(tkinter.Frame):
         # --tamper=TAMPER     Use given script(s) for tampering injection data
         self.tamper = tkinter.Listbox(tampers_lf, height=9, width=10, selectmode=tkinter.EXTENDED)
         # *.py in listbox, exclude __init__.py
-        files_tamper = os.listdir("./tamper")
+        files_tamper = os.listdir(os.path.join(sqlmap_path, "tamper"))
         tampers = filter(lambda x: x.endswith('.py'), files_tamper)
         for tamp_list in sorted(tampers):
             if tamp_list not in "__init__.py":
@@ -2718,7 +2724,7 @@ class MainApplication(tkinter.Frame):
         else:
             disable_precon_sql = ""
         return disable_precon_sql
-    
+
     # --dump-file=DUMP.. Store dumped data to a custom file
     def f_dump_file(self):
         sql_dump_file = self.chk_dump_file_var.get()
@@ -2738,7 +2744,7 @@ class MainApplication(tkinter.Frame):
         else:
             save_dump_file_sql = ""
         return save_dump_file_sql
-    
+
     # --abort-on-empty Abort data retrieval on empty results
     def f_abort_on_empty(self):
         sql_abort_on_empty = self.chk_abort_on_empty_var.get()
@@ -3778,7 +3784,7 @@ class MainApplication(tkinter.Frame):
             self.e_csrf_method.config(state='disabled')
             csrf_method_sql = ""
         return csrf_method_sql
-    
+
     # --csrf-data=POST data to send during anti-CSRF token page visit
     def f_csrf_data(self, *args):
         sql_csrf_data = self.chk_csrf_data_method_var.get()
@@ -4079,7 +4085,7 @@ class MainApplication(tkinter.Frame):
         else:
             batch_sql = ""
         return batch_sql
-    
+
     # --batch             Never ask for user input, use the default behaviour
     @property
     def f_batch(self):
@@ -4089,6 +4095,16 @@ class MainApplication(tkinter.Frame):
         else:
             batch_sql = ""
         return batch_sql
+
+    # --no-logging          Stop logging creating
+    @property
+    def f_no_logging(self):
+        sql_no_logging = self.chk_no_logging_var.get()
+        if sql_no_logging == "on":
+            no_logging_sql = " --no-logging"
+        else:
+            no_logging_sql = ""
+        return no_logging_sql
 
     # --binary-fields=..  Result fields having binary values (e.g. "digest")
     def f_binary_fields(self, *args):
@@ -5160,7 +5176,7 @@ class MainApplication(tkinter.Frame):
                     idx = '1.0'
                     while 1:
                         idx = self.sesTXT.search(tagz, idx, nocase=1, stopindex=tkinter.END)
-                        if not idx: 
+                        if not idx:
                             break
                         last_idx = '"%s"+%dc' % (idx, len(tagz))
                         self.sesTXT.tag_add('found', idx, last_idx)
@@ -5270,7 +5286,7 @@ class MainApplication(tkinter.Frame):
 
     # Start configured query for sqlmap.py
     def inject_it(self):
-        appscript.app('Terminal').do_script('python3 /Users/your_folder_to_sqlmap/sqlmap.py %s' % (self.sqlEdit.get()))
+        appscript.app('Terminal').do_script(f'python3 {sqlmap_py_path} {self.sqlEdit.get()}')
 
     def on_find(self):
         target = self.searchEdit.get()
