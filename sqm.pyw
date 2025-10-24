@@ -878,8 +878,7 @@ class MainApplication(tkinter.Frame):
         self.chk_crack.grid(row=5, column=3, sticky='w')
         #
         self.e_crack_var = tkinter.StringVar()
-        self.e_crack = ttk.Entry(miscellaneous_lf, width=10)
-        self.e_crack.config(text="", textvariable=self.e_crack_var)
+        self.e_crack = ttk.Entry(miscellaneous_lf, width=10, textvariable=self.e_crack_var)
         self.e_crack.grid(row=5, column=4, sticky='w', padx=5)
         #
         # --answers=ANSWERS   Set question answers (e.g. "quit=N,follow=N")
@@ -1121,6 +1120,12 @@ class MainApplication(tkinter.Frame):
         self.e_suffix.bind('<<ComboboxSelected>>', self.f_suffix)
         self.e_suffix.grid(row=5, column=1, sticky='we', padx=3)
         # --os=OS             Force back-end DBMS operating system to this value
+        self.chk_os = ttk.Checkbutton(injection_lf)
+        self.chk_os_var = tkinter.StringVar()
+        self.chk_os.config(text="OS", variable=self.chk_os_var, onvalue="on",
+                           offvalue="off", command=self.f_os)
+        self.chk_os.grid(row=6, column=0, sticky='w')
+        #
         self.e_os = ttk.Combobox(injection_lf)
         self.e_os_value = tkinter.StringVar()
         self.e_os.config(textvariable=self.e_os_value, state='disabled', width=30)
@@ -1128,22 +1133,17 @@ class MainApplication(tkinter.Frame):
         self.e_os.current(0)
         self.e_os.bind('<<ComboboxSelected>>', self.f_os)
         self.e_os.grid(row=6, column=1, sticky='we', padx=3)
-        #
-        self.chk_os = ttk.Checkbutton(injection_lf)
-        self.chk_os_var = tkinter.StringVar()
-        self.chk_os.config(text="OS", variable=self.chk_os_var, onvalue="on",
-                           offvalue="off", command=self.f_os)
-        self.chk_os.grid(row=6, column=0, sticky='w')
         # --skip=SKIP         Skip testing for given parameter(s)
-        self.e_skip = ttk.Entry(injection_lf)
-        self.e_skip.config(text="", textvariable="", width=30)
-        self.e_skip.grid(row=7, column=1, sticky='we', padx=3)
-        #
         self.chk_skip = ttk.Checkbutton(injection_lf)
         self.chk_skip_var = tkinter.StringVar()
         self.chk_skip.config(text="skip", variable=self.chk_skip_var, onvalue="on",
                              offvalue="off", command=self.f_skip)
         self.chk_skip.grid(row=7, column=0, sticky='w')
+        #
+        self.e_skip_var = tkinter.StringVar()
+        self.e_skip = ttk.Entry(injection_lf, width=30, textvariable=self.e_skip_var)
+        self.e_skip_var = tkinter.StringVar()
+        self.e_skip.grid(row=7, column=1, sticky='we', padx=3)
         # --tamper-parm=22  Use parameter for tamper script
         self.chk_tamper_parm = ttk.Checkbutton(injection_lf)
         self.chk_tamper_parm_var = tkinter.StringVar()
