@@ -596,8 +596,7 @@ class MainApplication(tkinter.Frame):
         self.chk_dump_file.grid(row=4, column=2, sticky='w')
         #
         self.e_dump_file_var = tkinter.StringVar()
-        self.e_dump_file = ttk.Entry(gen_opt_lf, width=7)
-        self.e_dump_file.config(text="", textvariable=self.e_dump_file_var)
+        self.e_dump_file = ttk.Entry(gen_opt_lf, width=7, textvariable=self.e_dump_file_var)
         self.e_dump_file.grid(row=4, column=3, sticky='we')
         # --abort-on-empty Abort data retrieval on empty results
         self.chk_abort_on_empty = ttk.Checkbutton(gen_opt_lf)
@@ -613,8 +612,7 @@ class MainApplication(tkinter.Frame):
         self.chk_session_file.grid(row=4, column=0, sticky='w', ipadx=15)
         #
         self.e_session_file_var = tkinter.StringVar()
-        self.e_session_file = ttk.Entry(gen_file_lf, width=20)
-        self.e_session_file.config(text="", textvariable=self.e_session_file_var)
+        self.e_session_file = ttk.Entry(gen_file_lf, width=20, textvariable=self.e_session_file_var)
         self.e_session_file.grid(row=4, column=1, sticky='we')
         # -t TRAFFICFILE      Log all HTTP traffic into a textual file
         self.chk_traffic_file = ttk.Checkbutton(gen_file_lf)
@@ -635,8 +633,7 @@ class MainApplication(tkinter.Frame):
         self.chk_output_dir.grid(row=5, column=0, sticky='w', ipadx=15)
         #
         self.e_output_dir_var = tkinter.StringVar()
-        self.e_output_dir = ttk.Entry(gen_file_lf, width=20)
-        self.e_output_dir.config(text="", textvariable=self.e_output_dir_var)
+        self.e_output_dir = ttk.Entry(gen_file_lf, width=20, textvariable=self.e_output_dir_var)
         self.e_output_dir.grid(row=5, column=1, sticky='we')
         # --save=SAVECONFIG   Save options to a configuration INI file
         self.chk_save = ttk.Checkbutton(gen_file_lf)
@@ -646,8 +643,7 @@ class MainApplication(tkinter.Frame):
         self.chk_save.grid(row=5, column=2, sticky='w', ipadx=15)
         #
         self.var_save_config = tkinter.StringVar()
-        self.e_save_config = ttk.Entry(gen_file_lf, width=20)
-        self.e_save_config.config(text="", textvariable=self.var_save_config)
+        self.e_save_config = ttk.Entry(gen_file_lf, width=20, textvariable=self.var_save_config)
         self.e_save_config.grid(row=5, column=3, sticky='we')
         # --scope=SCOPE       Regexp to filter targets from provided proxy log
         self.chk_scope = ttk.Checkbutton(gen_file_lf)
