@@ -1544,8 +1544,7 @@ class MainApplication(tkinter.Frame):
         self.chk_live_cookies.grid(row=5, column=0, sticky='w')
         #
         self.var_read_live_cookies = tkinter.StringVar()
-        self.e_live_cookies = ttk.Entry(data_lf, width=60)
-        self.e_live_cookies.config(text="", textvariable=self.var_read_live_cookies)
+        self.e_live_cookies = ttk.Entry(data_lf, width=60, textvariable=self.var_read_live_cookies)
         self.e_live_cookies.grid(row=5, column=1, sticky='we', padx=3)
         self.e_live_cookies.columnconfigure(0, weight=1)
         # --load-cookies=LOC  File containing cookies in Netscape/wget format
@@ -1556,8 +1555,7 @@ class MainApplication(tkinter.Frame):
         self.chk_load_cookies.grid(row=6, column=0, sticky='w')
         #
         self.var_read_load_cookies = tkinter.StringVar()
-        self.e_load_cookies = ttk.Entry(data_lf, width=60)
-        self.e_load_cookies.config(text="", textvariable=self.var_read_load_cookies)
+        self.e_load_cookies = ttk.Entry(data_lf, width=60, textvariable=self.var_read_load_cookies)
         self.e_load_cookies.grid(row=6, column=1, sticky='we', padx=3)
         self.e_load_cookies.columnconfigure(0, weight=1)
         # --drop-set-cookie   Ignore Set-Cookie header from response
