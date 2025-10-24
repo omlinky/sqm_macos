@@ -554,8 +554,7 @@ class MainApplication(tkinter.Frame):
         self.chk_preprocess.grid(row=3, column=6, sticky='w')
         #
         self.e_preprocess_var = tkinter.StringVar()
-        self.e_preprocess = ttk.Entry(gen_opt_lf, width=7)
-        self.e_preprocess.config(text="", textvariable=self.e_preprocess_var)
+        self.e_preprocess = ttk.Entry(gen_opt_lf, width=7, textvariable=self.e_preprocess_var)
         self.e_preprocess.grid(row=3, column=7, sticky='w')
         self.e_preprocess.columnconfigure(0, weight=1)
         # --postprocess        Use given script(s) for postprocessing of response data
@@ -566,9 +565,8 @@ class MainApplication(tkinter.Frame):
         self.chk_post_process.grid(row=4, column=6, sticky='w')
         #
         self.e_post_process_var = tkinter.StringVar()
-        self.e_post_process = ttk.Entry(gen_opt_lf, width=7)
-        self.e_post_process.config(text="", textvariable=self.e_post_process_var)
-        self.e_post_process.grid(row=4, column=7,  sticky='w')
+        self.e_post_process = ttk.Entry(gen_opt_lf, width=7, textvariable=self.e_post_process_var)
+        self.e_post_process.grid(row=4, column=7, sticky='w')
         self.e_post_process.columnconfigure(0, weight=1)
         # --test-skip=TEST..  Skip tests by payloads and/or titles (e.g. BENCHMARK)
         self.chk_test_skip = ttk.Checkbutton(gen_opt_lf)
