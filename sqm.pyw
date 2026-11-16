@@ -491,9 +491,10 @@ class MainApplication(tkinter.Frame):
             horizontal = ttk.Scrollbar(container, orient='horizontal', command=text_widget.xview)
             text_widget.configure(xscrollcommand=horizontal.set)
             horizontal.grid(row=1, column=0, sticky='ew')
-        # Settings use two equal cards per row, with aligned option/value fields.
+        # Settings use three equal cards per row, with aligned option/value fields.
         settings_f.columnconfigure(0, weight=1, uniform='settings_cards')
         settings_f.columnconfigure(1, weight=1, uniform='settings_cards')
+        settings_f.columnconfigure(2, weight=1, uniform='settings_cards')
         run_settings = ttk.Labelframe(settings_f, text='Run behavior', padding=8)
         run_settings.grid(row=0, column=0, columnspan=1, sticky='nsew', padx=4, pady=4)
         run_settings.columnconfigure(1, weight=1)
@@ -501,19 +502,19 @@ class MainApplication(tkinter.Frame):
         discovery_settings.grid(row=0, column=1, columnspan=1, sticky='nsew', padx=4, pady=4)
         discovery_settings.columnconfigure(1, weight=1)
         performance_settings = ttk.Labelframe(settings_f, text='Performance & fingerprint', padding=8)
-        performance_settings.grid(row=1, column=0, columnspan=1, sticky='nsew', padx=4, pady=4)
+        performance_settings.grid(row=0, column=2, columnspan=1, sticky='nsew', padx=4, pady=4)
         performance_settings.columnconfigure(1, weight=1)
         display_settings = ttk.Labelframe(settings_f, text='Console & progress', padding=8)
-        display_settings.grid(row=1, column=1, columnspan=1, sticky='nsew', padx=4, pady=4)
+        display_settings.grid(row=1, column=0, columnspan=1, sticky='nsew', padx=4, pady=4)
         display_settings.columnconfigure(1, weight=1)
         data_settings = ttk.Labelframe(settings_f, text='Data & export format', padding=8)
-        data_settings.grid(row=2, column=0, columnspan=1, sticky='nsew', padx=4, pady=4)
+        data_settings.grid(row=1, column=1, columnspan=1, sticky='nsew', padx=4, pady=4)
         data_settings.columnconfigure(1, weight=1)
         advanced_settings = ttk.Labelframe(settings_f, text='Tests, scripts & maintenance', padding=8)
-        advanced_settings.grid(row=2, column=1, columnspan=1, sticky='nsew', padx=4, pady=4)
+        advanced_settings.grid(row=1, column=2, columnspan=1, sticky='nsew', padx=4, pady=4)
         advanced_settings.columnconfigure(1, weight=1)
         file_settings = ttk.Labelframe(settings_f, text='Session & output files', padding=8)
-        file_settings.grid(row=3, column=0, columnspan=2, sticky='nsew', padx=4, pady=4)
+        file_settings.grid(row=2, column=0, columnspan=3, sticky='nsew', padx=4, pady=4)
         file_settings.columnconfigure(1, weight=1)
         # GENERAL
         # --forms             Parse and test forms on target url
@@ -1151,23 +1152,27 @@ class MainApplication(tkinter.Frame):
         self.e_verbose.current(0)
         self.e_verbose.bind('<<ComboboxSelected>>', self.f_verbose)
         self.e_verbose.grid(row=0, column=1, columnspan=1, sticky='ew', padx=(0, 0), pady=3)
+        # Keep value fields compact enough for three columns; they still expand
+        # with their cards and scroll horizontally when a value is longer.
+        for card in (run_settings, discovery_settings, performance_settings,
+                     display_settings, data_settings, advanced_settings):
+            for control in card.winfo_children():
+                if isinstance(control, ttk.Entry):
+                    control.configure(width=7)
         # INJECTION | DETECTION | TECHNIQUE
         paned_i_t_o = ttk.Frame(s_det_tech_f)
-        paned_i_t_o.rowconfigure(0, weight=1)
-        paned_i_t_o.columnconfigure(0, weight=3, uniform="options")
-        paned_i_t_o.columnconfigure(1, weight=2, uniform="options")
+        for column in range(3):
+            paned_i_t_o.columnconfigure(column, weight=1, uniform="options")
         # INJECTION
         injection_lf = ttk.Labelframe(paned_i_t_o, text='Injection')
-        injection_lf.rowconfigure(0, weight=1)
-        injection_lf.columnconfigure(0, minsize=125)
         injection_lf.columnconfigure(1, weight=1)
         # TAMPERS
         tampers_lf = ttk.Labelframe(paned_i_t_o, text='Tampers')
         tampers_lf.rowconfigure(0, weight=1)
         tampers_lf.columnconfigure(0, weight=1)
         #
-        injection_lf.grid(row=0, column=0, sticky='nsew', padx=(0, 4))
-        tampers_lf.grid(row=0, column=1, sticky='nsew')
+        injection_lf.grid(row=0, column=0, sticky='new', padx=4, pady=4)
+        tampers_lf.grid(row=1, column=0, sticky='nsew', padx=4, pady=4)
         paned_i_t_o.grid(row=0, column=0, pady=4, sticky='we')
         # --dbms=DBMS         Force back-end DBMS to this value
         self.chk_dbms = ttk.Checkbutton(injection_lf)
@@ -1290,7 +1295,7 @@ class MainApplication(tkinter.Frame):
         paned_inj.rowconfigure(0, weight=1)
         paned_inj.columnconfigure(0, weight=1)
         # add:
-        chk_inj_lf = ttk.Labelframe(paned_inj, text='')
+        chk_inj_lf = ttk.Labelframe(paned_inj, text='', padding=2)
         chk_inj_lf.rowconfigure(0, weight=1)
         chk_inj_lf.columnconfigure(0, weight=1)
         #
@@ -1365,21 +1370,14 @@ class MainApplication(tkinter.Frame):
         self.tamper.configure(xscrollcommand=scroll_tamper_x.set)
         scroll_tamper_x.grid(row=1, column=0, sticky='ew', padx=5)
         #
-        paned_d_t_o = ttk.Frame(s_det_tech_f)
-        paned_d_t_o.columnconfigure(0, weight=3, uniform="options")
-        paned_d_t_o.columnconfigure(1, weight=2, uniform="options")
-        #
-        detection_lf = ttk.Labelframe(paned_d_t_o, text='Detection')
-        detection_lf.columnconfigure(0, minsize=125)
+        detection_lf = ttk.Labelframe(paned_i_t_o, text='Detection')
         detection_lf.columnconfigure(1, weight=1)
         #
-        technique_lf = ttk.Labelframe(paned_d_t_o, text='Technique')
-        technique_lf.columnconfigure(0, minsize=125)
+        technique_lf = ttk.Labelframe(paned_i_t_o, text='Technique')
         technique_lf.columnconfigure(1, weight=1)
         #
-        detection_lf.grid(row=0, column=0, sticky='nsew', padx=(0, 4))
-        technique_lf.grid(row=0, column=1, sticky='nsew')
-        paned_d_t_o.grid(row=1, column=0, columnspan=2, sticky='we', ipady=0)
+        detection_lf.grid(row=0, column=1, sticky='new', padx=4, pady=4)
+        technique_lf.grid(row=0, column=2, sticky='new', padx=4, pady=4)
         # --string=STRING     String to match when query is evaluated to True
         self.e_string = ttk.Combobox(detection_lf)
         self.e_string_value = tkinter.StringVar()
@@ -1618,9 +1616,9 @@ class MainApplication(tkinter.Frame):
         self.entry_second_req.bind('<<ComboboxSelected>>', self.f_second_req)
         self.entry_second_req.grid(row=8, column=1, sticky='nwe', padx=3)
         # Non-SQL injection techniques
-        non_sql_lf = ttk.Labelframe(technique_lf, text='Non-SQL techniques')
+        non_sql_lf = ttk.Labelframe(paned_i_t_o, text='Non-SQL techniques')
         non_sql_lf.columnconfigure(1, weight=1)
-        non_sql_lf.grid(row=20, column=0, columnspan=2, sticky='ew', pady=6)
+        non_sql_lf.grid(row=1, column=1, sticky='new', padx=4, pady=4)
         non_sql_lf.columnconfigure(0, weight=0)
         non_sql_lf.columnconfigure(1, weight=1)
         # --nosql: NoSQL injection
@@ -1707,6 +1705,26 @@ class MainApplication(tkinter.Frame):
         #
         self.e_oob_token = ttk.Entry(non_sql_lf, width=18)
         self.e_oob_token.grid(row=8, column=1, sticky='ew', pady=3)
+        # Fit the forms and checkbox groups into three compact columns.
+        for card in (injection_lf, detection_lf, technique_lf, non_sql_lf):
+            for control in card.winfo_children():
+                if isinstance(control, ttk.Entry):
+                    control.configure(width=7)
+        for index, control in enumerate((self.chk_invalid_logical, self.chk_invalid_bignum,
+                                         self.chk_no_cast, self.chk_no_escape,
+                                         self.chk_skip_static, self.chk_invalid_string,
+                                         self.chk_proof, self.chk_esperanto)):
+            control.configure(width=0)
+            control.grid_configure(row=index // 2, column=index % 2)
+        for index, control in enumerate((self.chk_nosql, self.chk_graphql, self.chk_jwt,
+                                         self.chk_ldap, self.chk_xpath, self.chk_ssti,
+                                         self.chk_hql, self.chk_xslt, self.chk_xxe,
+                                         self.chk_sparql, self.chk_odata)):
+            control.grid_configure(row=index // 2, column=index % 2, columnspan=1)
+        self.chk_oob_server.grid_configure(row=6)
+        self.e_oob_server.grid_configure(row=6)
+        self.chk_oob_token.grid_configure(row=7)
+        self.e_oob_token.grid_configure(row=7)
         # DATA BOX
         data_n = ttk.Notebook(request_f)
         data1 = ttk.Frame(data_n)
@@ -2458,9 +2476,14 @@ class MainApplication(tkinter.Frame):
                                 offvalue="off", command=self.f_chunked)
         self.chk_chunked.grid(row=15, column=0, columnspan=2, sticky='w', padx=(0, 8), pady=3)
         # ENUMERATION_1
-        enumerate_lf = ttk.Labelframe(enumeration_f, text='Identity & users')
+        enumeration_summary = ttk.Frame(enumeration_f)
+        enumeration_summary.grid(row=0, column=0, sticky='ew')
+        enumeration_summary.columnconfigure(0, weight=1, uniform='summary')
+        enumeration_summary.columnconfigure(1, weight=1, uniform='summary')
+        enumeration_summary.columnconfigure(2, weight=1, uniform='summary')
+        enumerate_lf = ttk.Labelframe(enumeration_summary, text='Identity & users')
         enumerate_lf.columnconfigure(1, weight=1)
-        enumerate_lf.grid(row=0, column=0, sticky='ew', padx=4, pady=4)
+        enumerate_lf.grid(row=0, column=0, sticky='nsew', padx=4, pady=4)
         # --current-user      Retrieve DBMS current user
         self.chk_current_user = ttk.Checkbutton(enumerate_lf)
         self.chk_current_user_var = tkinter.StringVar()
@@ -2516,9 +2539,9 @@ class MainApplication(tkinter.Frame):
                                   offvalue="off", command=self.f_host_name)
         self.chk_host_name.grid(row=9, column=0, columnspan=2, sticky='w', padx=(0, 8), pady=3)
         # ENUMERATION_2
-        enumerate_lf_2 = ttk.Labelframe(enumeration_f, text='Database structure')
+        enumerate_lf_2 = ttk.Labelframe(enumeration_summary, text='Database structure')
         enumerate_lf_2.columnconfigure(1, weight=1)
-        enumerate_lf_2.grid(row=1, column=0, sticky='ew', padx=4, pady=4)
+        enumerate_lf_2.grid(row=0, column=1, sticky='nsew', padx=4, pady=4)
         self.chk_current_db.grid(row=4, column=0, columnspan=2, sticky='w', padx=(0, 8), pady=3)
         # --is-dba   Detect if the DBMS current user is DBA
         self.chk_is_dba = ttk.Checkbutton(enumerate_lf_2)
@@ -2557,9 +2580,9 @@ class MainApplication(tkinter.Frame):
                               offvalue="off", command=self.f_count)
         self.chk_count.grid(row=5, column=0, columnspan=2, sticky='w', padx=(0, 8), pady=3)
         # ENUMIRATION_3
-        dump_lf = ttk.Labelframe(enumeration_f, text='Data retrieval')
+        dump_lf = ttk.Labelframe(enumeration_summary, text='Data retrieval')
         dump_lf.columnconfigure(1, weight=1)
-        dump_lf.grid(row=2, column=0, sticky='ew', padx=4, pady=4)
+        dump_lf.grid(row=1, column=0, sticky='nsew', padx=4, pady=4)
         # -b, --banner        Retrieve DBMS banner
         self.chk_banner = ttk.Checkbutton(dump_lf)
         self.f_banner_var = tkinter.StringVar()
@@ -2592,7 +2615,7 @@ class MainApplication(tkinter.Frame):
         self.chk_first.grid(row=3, column=0, columnspan=1, sticky='w', padx=(0, 8), pady=3)
         #
         self.entry_first_var = tkinter.StringVar()
-        self.entry_first = ttk.Entry(dump_lf, width=18, textvariable=self.entry_first_var)
+        self.entry_first = ttk.Entry(dump_lf, width=8, textvariable=self.entry_first_var)
         self.entry_first.grid(row=3, column=1, sticky='ew', pady=3)
         # --last=LASTCHAR     Last query output word character to retrieve
         self.chk_last = ttk.Checkbutton(dump_lf)
@@ -2602,12 +2625,12 @@ class MainApplication(tkinter.Frame):
         self.chk_last.grid(row=5, column=0, columnspan=1, sticky='w', padx=(0, 8), pady=3)
         #
         self.entry_last_var = tkinter.StringVar()
-        self.entry_last = ttk.Entry(dump_lf, width=18, textvariable=self.entry_last_var)
+        self.entry_last = ttk.Entry(dump_lf, width=8, textvariable=self.entry_last_var)
         self.entry_last.grid(row=5, column=1, sticky='ew', pady=3)
         # ENUMIRATION_4
-        dump_lf_4 = ttk.Labelframe(enumeration_f, text='Statements & procedures')
+        dump_lf_4 = ttk.Labelframe(enumeration_summary, text='Statements & procedures')
         dump_lf_4.columnconfigure(1, weight=1)
-        dump_lf_4.grid(row=3, column=0, sticky='ew', padx=4, pady=4)
+        dump_lf_4.grid(row=1, column=1, sticky='nsew', padx=4, pady=4)
         # --dump-all          Dump all DBMS databases tables entries
         self.chk_dump_all = ttk.Checkbutton(dump_lf_4)
         self.chk_dump_all_var = tkinter.StringVar()
@@ -2627,7 +2650,7 @@ class MainApplication(tkinter.Frame):
                               offvalue="off", command=self.f_pivot)
         self.chk_pivot.grid(row=2, column=0, columnspan=1, sticky='w', padx=(0, 8), pady=3)
         #
-        self.e_pivot = ttk.Entry(dump_lf_4, width=18)
+        self.e_pivot = ttk.Entry(dump_lf_4, width=6)
         self.e_pivot.grid(row=2, column=1, sticky='ew', pady=3)
         # --procs   Retrieve stored procedures/functions and their source
         self.chk_procs = ttk.Checkbutton(dump_lf_4)
@@ -2638,7 +2661,7 @@ class MainApplication(tkinter.Frame):
         # Block #1
         dtc_lf = ttk.Labelframe(enumeration_f, text='Objects & row limits')
         dtc_lf.columnconfigure(1, weight=1)
-        dtc_lf.grid(row=4, column=0, sticky='ew', padx=4, pady=4)
+        dtc_lf.grid(row=1, column=0, sticky='ew', padx=4, pady=4)
         dtc_lf.columnconfigure(0, weight=0)
         # -D DB               DBMS database to enumerate
         self.chk_database = ttk.Checkbutton(dtc_lf)
@@ -2725,7 +2748,7 @@ class MainApplication(tkinter.Frame):
         # SQLQUERY START PAINT
         sql_query_lf = ttk.Labelframe(enumeration_f, text='SQL queries')
         sql_query_lf.columnconfigure(1, weight=1)
-        sql_query_lf.grid(row=5, column=0, sticky='ew', padx=4, pady=4)
+        sql_query_lf.grid(row=2, column=0, sticky='ew', padx=4, pady=4)
         sql_query_lf.columnconfigure(0, weight=0)
         # --sql-query=QUERY   SQL statement to be executed
         self.chk_sql_query = ttk.Checkbutton(sql_query_lf)
@@ -2773,8 +2796,8 @@ class MainApplication(tkinter.Frame):
         self.entry_sql_file.columnconfigure(0, weight=1)
         #
         # BRUTEFORCE
-        char_bf_lf = ttk.Labelframe(enumeration_f, text='Brute force')
-        char_bf_lf.grid(row=6, column=0, sticky='ew', padx=4, pady=4)
+        char_bf_lf = ttk.Labelframe(enumeration_summary, text='Brute force')
+        char_bf_lf.grid(row=0, column=2, sticky='nsew', padx=4, pady=4)
         # --common-tables     Check existence of common tables
         self.chk_common_tables = ttk.Checkbutton(char_bf_lf)
         self.chk_common_tables_var = tkinter.StringVar()
@@ -2796,7 +2819,7 @@ class MainApplication(tkinter.Frame):
         # User-defined function injection
         char_bf_lf = ttk.Labelframe(enumeration_f, text='User-defined functions')
         char_bf_lf.columnconfigure(1, weight=1)
-        char_bf_lf.grid(row=7, column=0, sticky='ew', padx=4, pady=4)
+        char_bf_lf.grid(row=3, column=0, sticky='ew', padx=4, pady=4)
         # --udf-inject     Inject custom user-defined functions
         self.chk_udf_inject = ttk.Checkbutton(char_bf_lf)
         self.chk_udf_inject_var = tkinter.StringVar()
@@ -3071,16 +3094,24 @@ class MainApplication(tkinter.Frame):
             ('skip-xmlencode', 'Skip XML payload encoding', False),
             ('auth-refresh', 'Authentication refresh script', True),
         ])
-        self._add_option_group(s_det_tech_f, 'Additional injection options', [
-            ('param-filter', 'Parameter locations (e.g. GET,POST)', True),
-            ('multi-bit', 'Read several bits per request', False),
+        injection_options = self._add_option_group(paned_i_t_o, 'Additional injection options', [
+            ('param-filter', 'Parameter locations\n(e.g. GET,POST)', True),
+            ('multi-bit', 'Read several bits\nper request', False),
         ])
-        self._add_option_group(enumeration_f, 'Database inspection', [
-            ('audit', 'Audit database security configuration', False),
+        injection_options.grid_configure(row=1, column=2, columnspan=1, sticky='new', pady=4)
+        for control in injection_options.winfo_children():
+            row = int(control.grid_info()['row']) * 2
+            if isinstance(control, ttk.Entry):
+                control.configure(width=7)
+                row += 1
+            control.grid_configure(row=row, column=0, columnspan=2)
+        inspection_group = self._add_option_group(enumeration_summary, 'Database inspection', [
+            ('audit', 'Audit database security\nconfiguration', False),
             ('links', 'Enumerate database links', False),
         ])
+        inspection_group.grid_configure(row=1, column=2, columnspan=1, sticky='nsew', pady=4)
         self._add_option_group(discovery_settings, 'Additional discovery', [
-            ('mine-params', 'Find hidden GET parameters', False),
+            ('mine-params', 'Find hidden GET\nparameters', False),
         ])
 
     # ####################################################
@@ -3102,6 +3133,7 @@ class MainApplication(tkinter.Frame):
                 checkbox.configure(command=lambda e=entry, v=enabled:
                                    e.configure(state='normal' if v.get() else 'disabled'))
             self.extra_options[option] = (enabled, value, takes_value)
+        return group
 
     @property
     def f_extra_options(self):
